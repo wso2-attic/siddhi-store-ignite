@@ -25,7 +25,6 @@ import java.util.SortedMap;
  * Implementation of class corresponding to Apache Ignite store.
  */
 public class ApacheIgniteCompiledCondition implements CompiledCondition {
-
     private String compiledQuery;
     private SortedMap<Integer, Object> parameters;
     private SortedMap<Integer, Object> parametersConstant;

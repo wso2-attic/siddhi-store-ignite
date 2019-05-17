@@ -31,7 +31,6 @@ import java.util.TreeMap;
  * format understood by the Apache ignite store.
  */
 public class ApacheIgniteConditionVisitor extends BaseExpressionVisitor {
-
     private StringBuilder condition;
     private String finalCompiledCondition;
     private Map<String, Object> placeholders;
@@ -157,6 +156,8 @@ public class ApacheIgniteConditionVisitor extends BaseExpressionVisitor {
             case NOT_EQUAL:
                 condition.append(ApacheIgniteConstants.SQL_COMPARE_NOT_EQUAL);
                 break;
+            default:
+                throw new ApacheIgniteTableException("Ignite store does not support operator : " + operator);
         }
         condition.append(ApacheIgniteConstants.WHITESPACE);
     }
@@ -224,6 +225,8 @@ public class ApacheIgniteConditionVisitor extends BaseExpressionVisitor {
             case SUBTRACT:
                 condition.append(ApacheIgniteConstants.SQL_MATH_SUBTRACT);
                 break;
+            default:
+                throw new ApacheIgniteTableException("Ignite store does not support operation : " + mathOperator);
         }
         condition.append(ApacheIgniteConstants.WHITESPACE);
     }

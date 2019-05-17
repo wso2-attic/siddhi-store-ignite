@@ -31,6 +31,7 @@ import org.wso2.siddhi.core.stream.input.InputHandler;
 import java.sql.SQLException;
 
 import static org.wso2.extension.siddhi.store.ignite.ApacheIgniteTestUtils.PASSWORD;
+import static org.wso2.extension.siddhi.store.ignite.ApacheIgniteTestUtils.TABLE_NAME;
 import static org.wso2.extension.siddhi.store.ignite.ApacheIgniteTestUtils.URL;
 import static org.wso2.extension.siddhi.store.ignite.ApacheIgniteTestUtils.USERNAME;
 
@@ -58,7 +59,7 @@ public class UpdateFromApacheIgniteTestCase {
     }
 
     @Test(description = "Testing updating  ")
-    public void updateIntoTableTest() throws InterruptedException {
+    public void updateIntoTableTest() throws InterruptedException, SQLException {
         log.info("UpdateIntoTableTest");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -79,9 +80,11 @@ public class UpdateFromApacheIgniteTestCase {
                 "from UpdateStockStream " +
                 "update  StockTable " +
                 "on StockTable.symbol==symbol;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler updateStockStream = siddhiAppRuntime.getInputHandler("UpdateStockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
@@ -89,8 +92,9 @@ public class UpdateFromApacheIgniteTestCase {
         updateStockStream.send(new Object[]{"GOOG", 1278.6F, 200L});
         updateStockStream.send(new Object[]{"IB", 27.6F, 101L});
         Thread.sleep(500);
-        int pointsInTable = 2;
-        Assert.assertEquals(pointsInTable, 2, "Definition/Insertion failed");
+
+        int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(TABLE_NAME);
+        Assert.assertEquals(rowsInTable, 3, "Updating failed");
         siddhiAppRuntime.shutdown();
     }
 }

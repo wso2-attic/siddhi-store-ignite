@@ -1,7 +1,6 @@
 ﻿siddhi-store-ignite
 ======================================
 
-
 The **siddhi-store-ignite extension** is an extension to <a target="_blank" href="https://wso2.github.io/siddhi">Siddhi</a> that  can be used to persist events to an Apache Ignite instance of the user's choice.
 Find some useful links below:
 
@@ -20,8 +19,6 @@ Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/si
 
 ## How to use 
 
-
-
 **Using the extension in <a target="_blank" href="https://github.com/wso2/product-sp">WSO2 Stream Processor</a>**
 
 * You can use this extension in the latest <a target="_blank" href="https://github.com/wso2/product-sp/releases">WSO2 Stream Processor</a> that is a part of <a target="_blank" href="http://wso2.com/analytics?utm_source=gitanalytics&utm_campaign=gitanalytics_Jul17">WSO2 Analytics</a> offering, with editor, debugger and simulation support.
@@ -34,12 +31,11 @@ Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/si
 
 ```
      <dependency>
-        <groupId>org.wso2.extension.siddhi.store.</groupId>
+        <groupId>org.wso2.extension.siddhi.store.ignite</groupId>
         <artifactId>siddhi-store-ignite</artifactId>
         <version>x.x.x</version>
      </dependency>
 ```
-
 
 ## How to Contribute
  
@@ -48,10 +44,6 @@ Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/si
   * Send your contributions as pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-store-ignite/tree/master">master branch</a>. 
  
 ## Contact us 
-
-
-
-
 
  * Post your questions with the <a target="_blank" href="http://stackoverflow.com/search?q=siddhi">"Siddhi"</a> tag in <a target="_blank" href="http://stackoverflow.com/search?q=siddhi">Stackoverflow</a>.
 

@@ -73,11 +73,14 @@ public class InsertIntoApacheIgniteTable {
                 "@info(name = 'query1') " +
                 "from StockStream\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query1);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
+
         Thread.sleep(500);
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(TABLE_NAME);
         Assert.assertEquals(rowsInTable, 2, "Insertion failed");
@@ -99,8 +102,10 @@ public class InsertIntoApacheIgniteTable {
                 "@info(name = 'query1') " +
                 "from StockStream\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query1);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
@@ -125,12 +130,15 @@ public class InsertIntoApacheIgniteTable {
                 "from StockStream\n" +
                 "select symbol, price, volume\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query1);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
         Thread.sleep(500);
+
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(TABLE_NAME);
         Assert.assertEquals(rowsInTable, 2, "Insertion failed");
         siddhiAppRuntime.shutdown();
@@ -152,12 +160,15 @@ public class InsertIntoApacheIgniteTable {
                 "from StockStream\n" +
                 "select symbol, price\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query1);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f});
         stockStream.send(new Object[]{"IB", 75.6f});
         Thread.sleep(500);
+
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(TABLE_NAME);
         Assert.assertEquals(rowsInTable, 2, "Insertion failed");
         siddhiAppRuntime.shutdown();

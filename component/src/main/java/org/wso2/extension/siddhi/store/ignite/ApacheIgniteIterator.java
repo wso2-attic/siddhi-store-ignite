@@ -32,7 +32,6 @@ import java.util.List;
  * streaming fashion.
  */
 public class ApacheIgniteIterator implements RecordIterator<Object[]> {
-
     private PreparedStatement statement;
     private ResultSet resultSet;
     private String tableName;
@@ -55,13 +54,12 @@ public class ApacheIgniteIterator implements RecordIterator<Object[]> {
         } catch (SQLException e) {
             throw new ApacheIgniteTableException("error in hasNext method " + e.getMessage());
         }
-
     }
 
     @Override
     public Object[] next() {
         try {
-            return this.extractRecord(this.resultSet);
+            return extractRecord(this.resultSet);
         } catch (SQLException e) {
             throw new ApacheIgniteTableException("Error retrieving records from table '" + this.tableName + "': "
                     + e.getMessage(), e);
@@ -101,6 +99,9 @@ public class ApacheIgniteIterator implements RecordIterator<Object[]> {
                         case OBJECT:
                             result.add(rs.getObject(attribute.getName()));
                             break;
+                        default:
+                            throw new ApacheIgniteTableException("Ignite store does not support data types : "
+                                    + attribute.getType());
                     }
                 }
             }

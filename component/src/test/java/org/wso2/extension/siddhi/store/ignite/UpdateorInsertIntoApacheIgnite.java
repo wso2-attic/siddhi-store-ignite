@@ -59,7 +59,7 @@ public class UpdateorInsertIntoApacheIgnite {
     }
 
     @Test(description = "Testing updating or inserting with stream variable")
-    public void updateOrInsertIntoTableTest() throws InterruptedException, SQLException {
+    public void updateOrInsertIntoTableWithStreamVariableTest() throws InterruptedException, SQLException {
         log.info("UpdateOrInsertIntoTableTest1");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -80,9 +80,11 @@ public class UpdateorInsertIntoApacheIgnite {
                 "from UpdateStockStream " +
                 "update or insert into StockTable " +
                 "on StockTable.symbol==symbol;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler updateStockStream = siddhiAppRuntime.getInputHandler("UpdateStockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
@@ -90,13 +92,14 @@ public class UpdateorInsertIntoApacheIgnite {
         updateStockStream.send(new Object[]{"GOOG", 1278.6F, 200L});
         updateStockStream.send(new Object[]{"IB", 27.6F, 101L});
         Thread.sleep(500);
+
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 3, "Insertion/Updating failed");
         siddhiAppRuntime.shutdown();
     }
 
     @Test(description = "Testing updating or inserting with constants")
-    public void updateOrInsertIntoTableTest2() throws InterruptedException, SQLException {
+    public void updateOrInsertIntoTableWithConstantsTest() throws InterruptedException, SQLException {
         log.info("UpdateOrInsertIntoTableTest2");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -117,9 +120,11 @@ public class UpdateorInsertIntoApacheIgnite {
                 "from UpdateStockStream " +
                 "update or insert into StockTable " +
                 "on StockTable.symbol=='WS';";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler updateStockStream = siddhiAppRuntime.getInputHandler("UpdateStockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
@@ -127,6 +132,7 @@ public class UpdateorInsertIntoApacheIgnite {
         updateStockStream.send(new Object[]{"GOOG", 1278.6F, 200L});
         updateStockStream.send(new Object[]{"IB", 27.6F, 101L});
         Thread.sleep(500);
+
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 3, "Insertion/Updating failed");
         siddhiAppRuntime.shutdown();
@@ -154,9 +160,11 @@ public class UpdateorInsertIntoApacheIgnite {
                 "from UpdateStockStream " +
                 "update or insert into StockTable " +
                 "on StockTable.volume==volume;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler updateStockStream = siddhiAppRuntime.getInputHandler("UpdateStockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
@@ -164,6 +172,7 @@ public class UpdateorInsertIntoApacheIgnite {
         updateStockStream.send(new Object[]{"GOOG", 1278.6F, 200L});
         updateStockStream.send(new Object[]{"IB", 27.6F, 101L});
         Thread.sleep(500);
+
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 3, "Insertion/Updating failed");
         siddhiAppRuntime.shutdown();
@@ -171,7 +180,7 @@ public class UpdateorInsertIntoApacheIgnite {
 
     @Test(description = "Testing updating or inserting with duplicate stream definitions ",
             expectedExceptions = DuplicateDefinitionException.class)
-    public void updateOrInsertIntoTableTest4() throws InterruptedException {
+    public void updateOrInsertIntoTableWithDuplicateStreamDefinitionsTest() throws InterruptedException {
         log.info("UpdateOrInsertIntoTableTest4");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -192,9 +201,11 @@ public class UpdateorInsertIntoApacheIgnite {
                 "from UpdateStockStream " +
                 "update or insert into StockTable " +
                 "on StockTable.symbol==symbol;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler updateStockStream = siddhiAppRuntime.getInputHandler("UpdateStockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});

@@ -26,7 +26,6 @@ import java.util.List;
  * Maintains the compiled select,group by, having, order by and limit clauses.
  */
 public class ApacheIgniteCompiledSelection implements CompiledSelection {
-
     private ApacheIgniteCompiledCondition compiledSelectClause;
     private ApacheIgniteCompiledCondition compiledGroupByClause;
     private ApacheIgniteCompiledCondition compiledHavingClause;
@@ -62,7 +61,6 @@ public class ApacheIgniteCompiledSelection implements CompiledSelection {
 
     public ApacheIgniteCompiledCondition getCompiledGroupByClause() {
         return compiledGroupByClause;
-
     }
 
     public ApacheIgniteCompiledCondition getCompiledHavingClause() {

@@ -70,7 +70,7 @@ public class ContainsInApacheIgniteTestCase {
     }
 
     @Test(description = "Testing contains in with single condition ")
-    public void containsInTableTest() throws InterruptedException {
+    public void containsInWithSingleConditionTest() throws InterruptedException {
         log.info("containsInTableTest");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -90,6 +90,7 @@ public class ContainsInApacheIgniteTestCase {
                 "from FooStream \n" +
                 "[(StockTable.symbol ==name ) in StockTable]\n" +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -115,6 +116,7 @@ public class ContainsInApacheIgniteTestCase {
                 }
             }
         });
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 325.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
@@ -122,6 +124,7 @@ public class ContainsInApacheIgniteTestCase {
         fooStream.send(new Object[]{"WSO2", 100});
         fooStream.send(new Object[]{"IBM", 10});
         fooStream.send(new Object[]{"WSO22", 100});
+
         SiddhiTestHelper.waitForEvents(waitTime, 2, eventCount, timeout);
         Assert.assertEquals(inEventCount, 2, "Number of success events");
         Assert.assertTrue(eventArrived, "success");
@@ -149,6 +152,7 @@ public class ContainsInApacheIgniteTestCase {
                 "from FooStream \n" +
                 "[( StockTable.symbol==name and StockTable.volume ==value) in StockTable]\n" +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -174,6 +178,7 @@ public class ContainsInApacheIgniteTestCase {
                 }
             }
         });
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 10L});
@@ -182,6 +187,7 @@ public class ContainsInApacheIgniteTestCase {
         fooStream.send(new Object[]{"IB", 10});
         fooStream.send(new Object[]{"GOOG", 10});
         fooStream.send(new Object[]{"WSO22", 100});
+
         SiddhiTestHelper.waitForEvents(waitTime, 2, eventCount, timeout);
         Assert.assertEquals(inEventCount, 2, "Number of success events");
         Assert.assertTrue(eventArrived, "success");
@@ -211,6 +217,7 @@ public class ContainsInApacheIgniteTestCase {
                 "from FooStream \n" +
                 "[(StockTable.symbol ==name ) in StockTable]\n" +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -236,6 +243,7 @@ public class ContainsInApacheIgniteTestCase {
                 }
             }
         });
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
         stockStream.send(new Object[]{"IBM", 65.6f, 10L});
@@ -243,6 +251,7 @@ public class ContainsInApacheIgniteTestCase {
         fooStream.send(new Object[]{"WSO2", 100});
         fooStream.send(new Object[]{"IBM", 10});
         fooStream.send(new Object[]{"WSO22", 100});
+
         SiddhiTestHelper.waitForEvents(waitTime, 2, eventCount, timeout);
         Assert.assertEquals(inEventCount, 2, "Number of success events");
         Assert.assertTrue(eventArrived, "success");

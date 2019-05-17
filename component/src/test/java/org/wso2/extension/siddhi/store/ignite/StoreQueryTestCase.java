@@ -77,26 +77,32 @@ public class StoreQueryTestCase {
                 "from StockStream\n" +
                 "select symbol,price,volume\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
         stockStream.send(new Object[]{"WSO22", 57.6f, 100L});
         Thread.sleep(500);
+
         Event[] events = siddhiAppRuntime.query("" +
                 "from StockTable ");
         EventPrinter.print(events);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "select*");
         EventPrinter.print(events);
         AssertJUnit.assertEquals(3, events.length);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on price > 75 ");
         EventPrinter.print(events);
         AssertJUnit.assertEquals(1, events.length);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on price > volume*3/4  ");
@@ -106,7 +112,7 @@ public class StoreQueryTestCase {
     }
 
     @Test(description = "testing by selecting specific attributes")
-    public void storeQueryTest2() throws InterruptedException {
+    public void storeQueryWithSelectingAttributesTest2() throws InterruptedException {
         log.info("Test2 table");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -121,13 +127,16 @@ public class StoreQueryTestCase {
                 "from StockStream\n" +
                 "select symbol,price,volume\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
         stockStream.send(new Object[]{"WSO22", 57.6f, 100L});
         Thread.sleep(500);
+
         Event[] events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on price > 75 " +
@@ -135,12 +144,14 @@ public class StoreQueryTestCase {
         EventPrinter.print(events);
         AssertJUnit.assertEquals(1, events.length);
         AssertJUnit.assertEquals(2, events[0].getData().length);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "select symbol, price ");
         EventPrinter.print(events);
         AssertJUnit.assertEquals(3, events.length);
         AssertJUnit.assertEquals(2, events[0].getData().length);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on price > 5 " +
@@ -153,7 +164,7 @@ public class StoreQueryTestCase {
     }
 
     @Test
-    public void storeQueryTest3() throws InterruptedException {
+    public void storeQueryGroupByTest() throws InterruptedException {
         log.info("Test3 table");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -168,12 +179,15 @@ public class StoreQueryTestCase {
                 "from StockStream\n" +
                 "select symbol,price,volume\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
         Thread.sleep(500);
+
         Event[] events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on price > 5 " +
@@ -183,6 +197,7 @@ public class StoreQueryTestCase {
         EventPrinter.print(events);
         AssertJUnit.assertEquals(1, events.length);
         AssertJUnit.assertEquals(100L, events[0].getData(1));
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on price > 5 " +
@@ -190,6 +205,7 @@ public class StoreQueryTestCase {
                 "group by symbol  ");
         EventPrinter.print(events);
         AssertJUnit.assertEquals(2, events.length);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on price > 5 " +
@@ -201,7 +217,7 @@ public class StoreQueryTestCase {
     }
 
     @Test(expectedExceptions = StoreQueryCreationException.class)
-    public void test4() throws InterruptedException {
+    public void storeQueryWithUndefinedFieldTest() throws InterruptedException {
         log.info("Test4 table");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -215,6 +231,7 @@ public class StoreQueryTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream " +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         try {
             InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
@@ -223,6 +240,7 @@ public class StoreQueryTestCase {
             stockStream.send(new Object[]{"IBM", 75.6f, 100L});
             stockStream.send(new Object[]{"WSO22", 57.6f, 100L});
             Thread.sleep(500);
+
             Event[] events = siddhiAppRuntime.query("" +
                     "from StockTable " +
                     "on price > 5 " +
@@ -238,7 +256,7 @@ public class StoreQueryTestCase {
     }
 
     @Test(description = "testing with constant value for on condition")
-    public void test5() throws InterruptedException {
+    public void storeQueryWithConstantsTest() throws InterruptedException {
         log.info("Test5 table");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -252,12 +270,15 @@ public class StoreQueryTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream " +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
         Thread.sleep(500);
+
         Event[] events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on symbol == 'IBM' " +
@@ -268,7 +289,7 @@ public class StoreQueryTestCase {
     }
 
     @Test(description = "testing order by and limit")
-    public void test6() throws InterruptedException {
+    public void storeQueryOrderByAndLimitTest() throws InterruptedException {
         log.info("Test6 table");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -282,6 +303,7 @@ public class StoreQueryTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream " +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         siddhiAppRuntime.start();
@@ -294,6 +316,7 @@ public class StoreQueryTestCase {
                 "select symbol, price, volume " +
                 "order by price DESC " +
                 "limit 2 ");
+
         EventPrinter.print(events);
         AssertJUnit.assertEquals(2, events.length);
         AssertJUnit.assertEquals(75.6F, events[0].getData()[1]);
@@ -301,7 +324,7 @@ public class StoreQueryTestCase {
     }
 
     @Test(description = "Testing group by and having")
-    public void havingtTest7() throws InterruptedException {
+    public void storeQueryHavingTest() throws InterruptedException {
         log.info(" havingtTest ");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -315,9 +338,11 @@ public class StoreQueryTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream " +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         siddhiAppRuntime.start();
+
         stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
         Thread.sleep(500);
@@ -327,6 +352,7 @@ public class StoreQueryTestCase {
                 "select symbol, volume  " +
                 "group by symbol " +
                 "having symbol == 'WSO2'";
+
         Event[] events = siddhiAppRuntime.query(storeQuery);
         EventPrinter.print(events);
         AssertJUnit.assertEquals(1, events.length);
@@ -348,9 +374,11 @@ public class StoreQueryTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream " +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         siddhiAppRuntime.start();
+
         stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
         Thread.sleep(500);
@@ -359,6 +387,7 @@ public class StoreQueryTestCase {
                 "on price > 56 " +
                 "select symbol, price, volume " +
                 "group by symbol, price ";
+
         Event[] events = siddhiAppRuntime.query(storeQuery);
         EventPrinter.print(events);
         AssertJUnit.assertEquals(1, events.length);
@@ -366,7 +395,7 @@ public class StoreQueryTestCase {
     }
 
     @Test
-    public void storeQueryTest() throws InterruptedException {
+    public void storeQueryOffsetTest() throws InterruptedException {
         log.info("storeQueryTest");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -381,14 +410,17 @@ public class StoreQueryTestCase {
                 "from StockStream\n" +
                 "select symbol,price,volume\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
         stockStream.send(new Object[]{"CSC", 57.6f, 100L});
         stockStream.send(new Object[]{"WSO22", 59.6f, 100L});
         Thread.sleep(500);
+
         Event[] events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on price > 5 AND symbol==\"WSO2\" " +
@@ -396,12 +428,14 @@ public class StoreQueryTestCase {
                 "order by price DESC");
         EventPrinter.print(events);
         AssertJUnit.assertEquals(1, events.length);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on volume > 10 " +
                 "select symbol,volume  " +
                 "limit 2 ");
         EventPrinter.print(events);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on price > 5 " +
@@ -409,6 +443,7 @@ public class StoreQueryTestCase {
                 "group by symbol  ");
         EventPrinter.print(events);
         AssertJUnit.assertEquals(4, events.length);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on volume > 10 " +
@@ -416,6 +451,7 @@ public class StoreQueryTestCase {
                 "offset 1 ");
         EventPrinter.print(events);
         AssertJUnit.assertEquals(3, events.length);
+
         events = siddhiAppRuntime.query("" +
                 "from StockTable " +
                 "on volume > 10 " +
@@ -428,7 +464,7 @@ public class StoreQueryTestCase {
     }
 
     @Test
-    public void test9() throws InterruptedException {
+    public void storeQueryTest() throws InterruptedException {
         log.info("Test9");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -442,17 +478,21 @@ public class StoreQueryTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream " +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 200L});
         stockStream.send(new Object[]{"GOOGLE", 57.6f, 300L});
         Thread.sleep(500);
+
         Event[] initialEvents = siddhiAppRuntime.query("from StockTable select *;");
         Assert.assertEquals(initialEvents.length, 3);
         siddhiAppRuntime.query("delete StockTable on StockTable.volume == 100L;");
         Thread.sleep(500);
+
         Event[] allEvents = siddhiAppRuntime.query("from StockTable select *;");
         Assert.assertEquals(allEvents.length, 2);
         Event[] events = siddhiAppRuntime.query("from StockTable on volume == 100L select *");
@@ -461,7 +501,7 @@ public class StoreQueryTestCase {
     }
 
     @Test(description = "Testing store query with limit and offset")
-    public void limitAndOffsettest() throws InterruptedException {
+    public void limitAndOffsetTest() throws InterruptedException {
         log.info("Testing store query with limit and offset");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -475,6 +515,7 @@ public class StoreQueryTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream " +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         siddhiAppRuntime.start();
@@ -482,13 +523,16 @@ public class StoreQueryTestCase {
         stockStream.send(new Object[]{2, "IBM", 200});
         stockStream.send(new Object[]{3, "GOOGLE", 300});
         Thread.sleep(500);
+
         Event[] allEvents = siddhiAppRuntime.query("from StockTable select * LIMIT 2;");
         Assert.assertEquals(allEvents.length, 2);
         Assert.assertEquals(allEvents[0].getData()[0], 3);
         Assert.assertEquals(allEvents[1].getData()[0], 2);
+
         allEvents = siddhiAppRuntime.query("from StockTable select * LIMIT 1 OFFSET 0;");
         Assert.assertEquals(allEvents.length, 1);
         Assert.assertEquals(allEvents[0].getData()[0], 3);
+
         allEvents = siddhiAppRuntime.query("from StockTable select * LIMIT 1 OFFSET 1;");
         Assert.assertEquals(allEvents.length, 1);
         Assert.assertEquals(allEvents[0].getData()[0], 2);

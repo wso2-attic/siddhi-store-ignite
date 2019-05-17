@@ -73,11 +73,14 @@ public class DefineTableTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query1);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
+
         Thread.sleep(500);
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 2, "Insertion failed");
@@ -95,6 +98,7 @@ public class DefineTableTestCase {
                 "username=\"" + USERNAME + "\", password=\"" + PASSWORD
                 + "\")\n" +
                 "define table StockTable (symbol string, price float, volume long); ";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams);
         siddhiAppRuntime.start();
         siddhiAppRuntime.shutdown();
@@ -102,7 +106,7 @@ public class DefineTableTestCase {
 
     @Test(description = "Testing table creation without defining value for url ",
             expectedExceptions = SiddhiAppCreationException.class)
-    public void createTableWithTest() {
+    public void createTableWithoutUrlTest() {
         log.info("createTableWithoutUrlTest");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -116,6 +120,7 @@ public class DefineTableTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query1);
         siddhiAppRuntime.start();
         siddhiAppRuntime.shutdown();
@@ -192,7 +197,7 @@ public class DefineTableTestCase {
     }
 
     @Test(description = "Testing table creation with table.name ")
-    public void createTableTest() throws InterruptedException, SQLException {
+    public void createTableWithNameTest() throws InterruptedException, SQLException {
         ApacheIgniteTestUtils.dropTable("FooTable");
         log.info("createTableTest");
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -207,11 +212,14 @@ public class DefineTableTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query1);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
+
         Thread.sleep(100);
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable("FooTable");
         Assert.assertEquals(rowsInTable, 2, "Insertion failed");
@@ -235,12 +243,15 @@ public class DefineTableTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query1);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
         Thread.sleep(500);
+
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 2, "Insertion failed");
         siddhiAppRuntime.shutdown();
@@ -263,12 +274,15 @@ public class DefineTableTestCase {
                 "@info(name = 'query1') " +
                 "from StockStream\n" +
                 "insert into StockTable ;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query1);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
         Thread.sleep(500);
+
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 2, "Insertion failed");
         siddhiAppRuntime.shutdown();

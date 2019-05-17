@@ -58,7 +58,7 @@ public class DeleteFromApacheIgniteTestCase {
     }
 
     @Test(description = "Testing deletion by using primary key in on condition")
-    public void deleteFromTableTest() throws InterruptedException, SQLException {
+    public void deleteFromTableWithPrimaryKeyTest() throws InterruptedException, SQLException {
         log.info("deleteFromTableTest");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -87,6 +87,7 @@ public class DeleteFromApacheIgniteTestCase {
         stockStream.send(new Object[]{"CSC", 85.6f, 200L});
         deleteStockStream.send(new Object[]{"WSO2"});
         deleteStockStream.send(new Object[]{"IBM"});
+
         Thread.sleep(500);
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 1, "Deletion failed");
@@ -94,7 +95,7 @@ public class DeleteFromApacheIgniteTestCase {
     }
 
     @Test(description = "Testing deletion using constant ")
-    public void deleteFromTableTest2() throws InterruptedException, SQLException {
+    public void deleteFromTableWithConstantInConditionTest() throws InterruptedException, SQLException {
         log.info("deleteFromTableTest");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -123,6 +124,7 @@ public class DeleteFromApacheIgniteTestCase {
         stockStream.send(new Object[]{"CSC", 85.6f, 200L});
         deleteStockStream.send(new Object[]{"WSO2"});
         deleteStockStream.send(new Object[]{"IBM"});
+
         Thread.sleep(500);
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 2, "Deletion failed");
@@ -159,6 +161,7 @@ public class DeleteFromApacheIgniteTestCase {
         stockStream.send(new Object[]{"CSC", 85.6f, 200L});
         deleteStockStream.send(new Object[]{100});
         deleteStockStream.send(new Object[]{150});
+
         Thread.sleep(500);
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 1, "Deletion failed");
@@ -166,7 +169,7 @@ public class DeleteFromApacheIgniteTestCase {
     }
 
     @Test(description = "Testing deletion using constant ")
-    public void deleteFromTableTest4() throws InterruptedException, SQLException {
+    public void deleteFromTableWithConditionTest() throws InterruptedException, SQLException {
         log.info("deleteFromTableTest");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -195,6 +198,7 @@ public class DeleteFromApacheIgniteTestCase {
         stockStream.send(new Object[]{"CSC", 85.6f, 200L});
         deleteStockStream.send(new Object[]{"WSO2"});
         deleteStockStream.send(new Object[]{"IBM"});
+
         Thread.sleep(500);
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 2, "Deletion failed");
@@ -202,7 +206,7 @@ public class DeleteFromApacheIgniteTestCase {
     }
 
     @Test(description = "Testing deletion by using multiple conditions")
-    public void deleteFromTableTest5() throws InterruptedException, SQLException {
+    public void deleteFromTableWithMultipleConditionsTest5() throws InterruptedException, SQLException {
         log.info("deleteFromTableTest");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -231,6 +235,7 @@ public class DeleteFromApacheIgniteTestCase {
         stockStream.send(new Object[]{"CSC", 85.6f, 200L});
         deleteStockStream.send(new Object[]{"WSO2", 315.6f});
         deleteStockStream.send(new Object[]{"IBM", 325.6f});
+
         Thread.sleep(500);
         int rowsInTable = ApacheIgniteTestUtils.getRowsInTable(ApacheIgniteTestUtils.TABLE_NAME);
         Assert.assertEquals(rowsInTable, 2, "Deletion failed");

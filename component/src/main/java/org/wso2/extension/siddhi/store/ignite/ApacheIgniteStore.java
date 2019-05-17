@@ -114,7 +114,7 @@ import static org.wso2.siddhi.core.util.SiddhiConstants.ANNOTATION_STORE;
                 @Parameter(
                         name = "url",
                         description = "Describes the url required for establishing the connection with apache ignite" +
-                                "store. ",
+                                "store.",
                         type = {DataType.STRING}
                 ),
                 @Parameter(
@@ -122,7 +122,7 @@ import static org.wso2.siddhi.core.util.SiddhiConstants.ANNOTATION_STORE;
                         description = "Describes whether authentication is enabled or not ",
                         optional = true,
                         defaultValue = "false",
-                        type = {DataType.STRING}
+                        type = {DataType.BOOL}
                 ),
                 @Parameter(
                         name = "username",
@@ -136,7 +136,8 @@ import static org.wso2.siddhi.core.util.SiddhiConstants.ANNOTATION_STORE;
                         name = "password",
                         description = "password for SQL connection.Mandatory parameter if the authentication " +
                                 "is enabled on the server. ",
-                        optional = true, defaultValue = "ignite",
+                        optional = true,
+                        defaultValue = "ignite",
                         type = {DataType.STRING}
                 ),
                 @Parameter(name = "table.name",
@@ -166,14 +167,14 @@ import static org.wso2.siddhi.core.util.SiddhiConstants.ANNOTATION_STORE;
                         description = "Whether to use distributed joins for non collocated data or not. ",
                         optional = true,
                         defaultValue = "false",
-                        type = {DataType.STRING}
+                        type = {DataType.BOOL}
                 ),
                 @Parameter(
                         name = "enforce.join.order",
                         description = "Whether to enforce join order of tables in the query or not. If set to true" +
                                 " query optimizer will not reorder tables in join. ",
                         optional = true,
-                        defaultValue = "false ",
+                        defaultValue = "false",
                         type = {DataType.STRING}
                 ),
                 @Parameter(
@@ -181,14 +182,14 @@ import static org.wso2.siddhi.core.util.SiddhiConstants.ANNOTATION_STORE;
                         description = "Whether your data is co-located or not ",
                         optional = true,
                         defaultValue = "false",
-                        type = {DataType.STRING}
+                        type = {DataType.BOOL}
                 ),
                 @Parameter(
                         name = "replicated.only",
                         description = "Whether query contains only replicated tables or not ",
                         optional = true,
                         defaultValue = "false",
-                        type = {DataType.STRING}
+                        type = {DataType.BOOL}
                 ),
                 @Parameter(
                         name = "auto.close.server.cursor",
@@ -196,20 +197,21 @@ import static org.wso2.siddhi.core.util.SiddhiConstants.ANNOTATION_STORE;
                                 "result set is retrieved or not. ",
                         optional = true,
                         defaultValue = "false",
-                        type = {DataType.STRING}
+                        type = {DataType.BOOL}
                 ),
                 @Parameter(
                         name = "socket.send.buffer",
                         description = "Socket send buffer size.When set to 0, OS default will be used. ",
-                        optional = true, defaultValue = "0 ",
-                        type = {DataType.STRING}
+                        optional = true,
+                        defaultValue = "0",
+                        type = {DataType.INT}
                 ),
                 @Parameter(
                         name = "socket.receive.buffer",
                         description = "Socket receive buffer size.When set to 0, OS default will be used. ",
                         optional = true,
                         defaultValue = "0",
-                        type = {DataType.STRING}
+                        type = {DataType.INT}
                 ),
 
                 @Parameter(
@@ -217,21 +219,21 @@ import static org.wso2.siddhi.core.util.SiddhiConstants.ANNOTATION_STORE;
                         description = "Number of backup copies of data.It can take the value of any positive integer",
                         optional = true,
                         defaultValue = "0",
-                        type = {DataType.STRING}
+                        type = {DataType.INT}
                 ),
                 @Parameter(
                         name = "atomicity",
                         description = "Sets atomicity mode for the cache.The possible values for atomicity are " +
                                 "atomic,transactional and transactional_snapshot. ",
                         optional = true,
-                        defaultValue = "atomic ",
+                        defaultValue = "atomic",
                         type = {DataType.STRING}
                 ),
                 @Parameter(
                         name = "affinity.key",
                         description = "specifies an affinity key name which is a column of the primary key constraint.",
                         optional = true,
-                        defaultValue = " column of the primary key constraint. ",
+                        defaultValue = "column of the primary key constraint. ",
                         type = {DataType.STRING}
                 ),
                 @Parameter(
@@ -287,9 +289,7 @@ import static org.wso2.siddhi.core.util.SiddhiConstants.ANNOTATION_STORE;
                 )
         }
 )
-
 public class ApacheIgniteStore extends AbstractQueryableRecordTable {
-
     private static final Log log = LogFactory.getLog(ApacheIgniteStore.class);
     private String tableName;
     private String url;
@@ -312,7 +312,6 @@ public class ApacheIgniteStore extends AbstractQueryableRecordTable {
     private StringBuilder connectionParams;
     private boolean connected;
     private boolean isAuthEnabled;
-    private Annotation storeAnnotation;
     private Annotation primaryKey;
     private List<Attribute> attributes;
     private Connection connection;
@@ -325,7 +324,7 @@ public class ApacheIgniteStore extends AbstractQueryableRecordTable {
      */
     @Override
     protected void init(TableDefinition tableDefinition, ConfigReader configReader) {
-        storeAnnotation = AnnotationHelper.getAnnotation(ANNOTATION_STORE, tableDefinition.getAnnotations());
+        Annotation storeAnnotation = AnnotationHelper.getAnnotation(ANNOTATION_STORE, tableDefinition.getAnnotations());
         primaryKey = AnnotationHelper.getAnnotation(ANNOTATION_PRIMARY_KEY, tableDefinition.getAnnotations());
         url = storeAnnotation.getElement(ANNOTATION_ELEMENT_URL);
         username = storeAnnotation.getElement(ANNOTATION_ELEMENT_USERNAME);
@@ -749,10 +748,7 @@ public class ApacheIgniteStore extends AbstractQueryableRecordTable {
      * The cleanups that have to be done after removing the receiver could be done here.
      */
     @Override
-    protected void destroy() {
-
-        this.disconnect();
-    }
+    protected void destroy() { }
 
     @Override
     protected RecordIterator<Object[]> query(Map<String, Object> parameterMap, CompiledCondition compiledCondition,
@@ -862,6 +858,7 @@ public class ApacheIgniteStore extends AbstractQueryableRecordTable {
         SortedMap<Integer, Object> paramMap = new TreeMap<>();
         SortedMap<Integer, Object> paramConstMap = new TreeMap<>();
         int offset = 0;
+
         for (SelectAttributeBuilder selectAttributeBuilder : selectAttributeBuilders) {
             ApacheIgniteConditionVisitor visitor = new ApacheIgniteConditionVisitor();
             selectAttributeBuilder.getExpressionBuilder().build(visitor);
@@ -1027,6 +1024,9 @@ public class ApacheIgniteStore extends AbstractQueryableRecordTable {
                     case STRING:
                         tableCreateQuery.append(ApacheIgniteConstants.STRING).append(WHITESPACE);
                         break;
+                    default:
+                        throw new ApacheIgniteTableException("Ignite store does not support data type : "
+                                + attribute.getType());
                 }
                 tableCreateQuery.append(SEPARATOR);
             });

@@ -21,12 +21,12 @@ package org.wso2.extension.siddhi.store.ignite;
  * Class which holds constants required by Apache Ignite store implementation.
  */
 public class ApacheIgniteConstants {
-
     public static final String ANNOTATION_ELEMENT_URL = "url";
     public static final String ANNOTATION_ELEMENT_TABLE_NAME = "table.name";
     public static final String ANNOTATION_ELEMENT_AUTH_ENABLED = "auth.enabled";
     public static final String ANNOTATION_ELEMENT_USERNAME = "username";
     public static final String ANNOTATION_ELEMENT_PASSWORD = "password";
+
     public static final String SCHEMA = "schema";
     public static final String TEMPLATE = "template";
     public static final String DISTRIBUTE_JOINS = "distributed.joins";
@@ -41,6 +41,7 @@ public class ApacheIgniteConstants {
     public static final String AFFINITY_KEY = "affinity.key";
     public static final String CACHE_NAME = "cache.name";
     public static final String DATA_REGION = "data.region";
+
     public static final String IGNITE_USER = "user";
     public static final String IGNITE_PASSWORD = "password";
     public static final String IGNITE_TEMPLATE = "template";
@@ -57,6 +58,7 @@ public class ApacheIgniteConstants {
     public static final String IGNITE_CACHE_NAME = "Cache_name";
     public static final String IGNITE_DATA_REGION = "Data_region";
     public static final String IGNITE_PARTITIONED = "PARTITIONED";
+
     public static final String SQL_PRIMARY_KEY_DEF = "PRIMARY KEY";
     public static final String SQL_AND = "AND";
     public static final String SQL_OR = "OR";
@@ -74,6 +76,7 @@ public class ApacheIgniteConstants {
     public static final String SQL_MATH_MOD = "%";
     public static final String SQL_MATH_MULTIPLY = "*";
     public static final String SQL_MATH_SUBTRACT = "-";
+
     public static final String OPEN_PARENTHESIS = "(";
     public static final String CLOSE_PARENTHESIS = ")";
     public static final String WHITESPACE = " ";
@@ -92,6 +95,7 @@ public class ApacheIgniteConstants {
     public static final String LONG = "long";
     public static final String FLOAT = "float";
     public static final String INTEGER = "int";
+
     public static final String INSERT_QUERY = "insert into {{tableName}} ({{columns}}) values ({{values}})";
     public static final String COLUMNS = "{{columns}}";
     public static final String VALUES = "{{values}}";

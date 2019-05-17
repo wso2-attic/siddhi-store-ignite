@@ -8,7 +8,7 @@
 
 <span id="syntax" class="md-typeset" style="display: block; font-weight: bold;">Syntax</span>
 ```
-@Store(type="apacheignite", url="<STRING>", auth.enabled="<STRING>", username="<STRING>", password="<STRING>", table.name="<STRING>", schema="<STRING>", template="<STRING>", distribute.joins="<STRING>", enforce.join.order="<STRING>", collocated="<STRING>", replicated.only="<STRING>", auto.close.server.cursor="<STRING>", socket.send.buffer="<STRING>", socket.receive.buffer="<STRING>", backups="<STRING>", atomicity="<STRING>", affinity.key="<STRING>", cache.name="<STRING>", data.region="<STRING>")
+@Store(type="apacheignite", url="<STRING>", auth.enabled="<BOOL>", username="<STRING>", password="<STRING>", table.name="<STRING>", schema="<STRING>", template="<STRING>", distribute.joins="<BOOL>", enforce.join.order="<STRING>", collocated="<BOOL>", replicated.only="<BOOL>", auto.close.server.cursor="<BOOL>", socket.send.buffer="<INT>", socket.receive.buffer="<INT>", backups="<INT>", atomicity="<STRING>", affinity.key="<STRING>", cache.name="<STRING>", data.region="<STRING>")
 @PrimaryKey("PRIMARY_KEY")
 @Index("INDEX")
 ```
@@ -25,7 +25,7 @@
     </tr>
     <tr>
         <td style="vertical-align: top">url</td>
-        <td style="vertical-align: top; word-wrap: break-word">Describes the url required for establishing the connection with apache ignitestore. </td>
+        <td style="vertical-align: top; word-wrap: break-word">Describes the url required for establishing the connection with apache ignitestore.</td>
         <td style="vertical-align: top"></td>
         <td style="vertical-align: top">STRING</td>
         <td style="vertical-align: top">No</td>
@@ -35,7 +35,7 @@
         <td style="vertical-align: top">auth.enabled</td>
         <td style="vertical-align: top; word-wrap: break-word">Describes whether authentication is enabled or not </td>
         <td style="vertical-align: top">false</td>
-        <td style="vertical-align: top">STRING</td>
+        <td style="vertical-align: top">BOOL</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
     </tr>
@@ -83,14 +83,14 @@
         <td style="vertical-align: top">distribute.joins</td>
         <td style="vertical-align: top; word-wrap: break-word">Whether to use distributed joins for non collocated data or not. </td>
         <td style="vertical-align: top">false</td>
-        <td style="vertical-align: top">STRING</td>
+        <td style="vertical-align: top">BOOL</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
     </tr>
     <tr>
         <td style="vertical-align: top">enforce.join.order</td>
         <td style="vertical-align: top; word-wrap: break-word">Whether to enforce join order of tables in the query or not. If set to true query optimizer will not reorder tables in join. </td>
-        <td style="vertical-align: top">false </td>
+        <td style="vertical-align: top">false</td>
         <td style="vertical-align: top">STRING</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
@@ -99,7 +99,7 @@
         <td style="vertical-align: top">collocated</td>
         <td style="vertical-align: top; word-wrap: break-word">Whether your data is co-located or not </td>
         <td style="vertical-align: top">false</td>
-        <td style="vertical-align: top">STRING</td>
+        <td style="vertical-align: top">BOOL</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
     </tr>
@@ -107,7 +107,7 @@
         <td style="vertical-align: top">replicated.only</td>
         <td style="vertical-align: top; word-wrap: break-word">Whether query contains only replicated tables or not </td>
         <td style="vertical-align: top">false</td>
-        <td style="vertical-align: top">STRING</td>
+        <td style="vertical-align: top">BOOL</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
     </tr>
@@ -115,15 +115,15 @@
         <td style="vertical-align: top">auto.close.server.cursor</td>
         <td style="vertical-align: top; word-wrap: break-word">Whether to close server-side cursor automatically when last piece of result set is retrieved or not. </td>
         <td style="vertical-align: top">false</td>
-        <td style="vertical-align: top">STRING</td>
+        <td style="vertical-align: top">BOOL</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
     </tr>
     <tr>
         <td style="vertical-align: top">socket.send.buffer</td>
         <td style="vertical-align: top; word-wrap: break-word">Socket send buffer size.When set to 0, OS default will be used. </td>
-        <td style="vertical-align: top">0 </td>
-        <td style="vertical-align: top">STRING</td>
+        <td style="vertical-align: top">0</td>
+        <td style="vertical-align: top">INT</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
     </tr>
@@ -131,7 +131,7 @@
         <td style="vertical-align: top">socket.receive.buffer</td>
         <td style="vertical-align: top; word-wrap: break-word">Socket receive buffer size.When set to 0, OS default will be used. </td>
         <td style="vertical-align: top">0</td>
-        <td style="vertical-align: top">STRING</td>
+        <td style="vertical-align: top">INT</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
     </tr>
@@ -139,14 +139,14 @@
         <td style="vertical-align: top">backups</td>
         <td style="vertical-align: top; word-wrap: break-word">Number of backup copies of data.It can take the value of any positive integer</td>
         <td style="vertical-align: top">0</td>
-        <td style="vertical-align: top">STRING</td>
+        <td style="vertical-align: top">INT</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
     </tr>
     <tr>
         <td style="vertical-align: top">atomicity</td>
         <td style="vertical-align: top; word-wrap: break-word">Sets atomicity mode for the cache.The possible values for atomicity are atomic,transactional and transactional_snapshot. </td>
-        <td style="vertical-align: top">atomic </td>
+        <td style="vertical-align: top">atomic</td>
         <td style="vertical-align: top">STRING</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>
@@ -154,7 +154,7 @@
     <tr>
         <td style="vertical-align: top">affinity.key</td>
         <td style="vertical-align: top; word-wrap: break-word">specifies an affinity key name which is a column of the primary key constraint.</td>
-        <td style="vertical-align: top"> column of the primary key constraint. </td>
+        <td style="vertical-align: top">column of the primary key constraint. </td>
         <td style="vertical-align: top">STRING</td>
         <td style="vertical-align: top">Yes</td>
         <td style="vertical-align: top">No</td>

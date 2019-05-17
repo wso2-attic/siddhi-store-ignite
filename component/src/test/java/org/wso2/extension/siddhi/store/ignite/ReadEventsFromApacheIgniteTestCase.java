@@ -66,7 +66,7 @@ public class ReadEventsFromApacheIgniteTestCase {
     }
 
     @Test(description = "Testing reading using primary key")
-    public void readFromTableTest() throws InterruptedException {
+    public void readFromTableWithPrimaryKeyTest() throws InterruptedException {
         log.info("ReadFromTableTest");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -89,6 +89,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 "StockTable.volume as checkVolume," +
                 "StockTable.price as checkCategory\n " +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -104,6 +105,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 }
             }
         });
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 325.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
@@ -112,13 +114,14 @@ public class ReadEventsFromApacheIgniteTestCase {
         fooStream.send(new Object[]{"CSC"});
         fooStream.send(new Object[]{"IBM"});
         Thread.sleep(500);
+
         Assert.assertTrue(eventArrived, "Event arrived");
         Assert.assertEquals(removeEventCount, 0, "Number of remove events ");
         siddhiAppRuntime.shutdown();
     }
 
     @Test(description = "Testing reading with constants  ")
-    public void readFromTableTest2() throws InterruptedException {
+    public void readFromTableWithConstantTest() throws InterruptedException {
         log.info("ReadFromTableTest2");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -141,6 +144,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 "StockTable.volume as checkVolume," +
                 "StockTable.price as checkCategory\n " +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -156,6 +160,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 }
             }
         });
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
@@ -163,13 +168,14 @@ public class ReadEventsFromApacheIgniteTestCase {
         fooStream.send(new Object[]{150});
         fooStream.send(new Object[]{200});
         Thread.sleep(500);
+
         Assert.assertTrue(eventArrived, "Event arrived");
         Assert.assertEquals(removeEventCount, 0, "Number of remove events");
         siddhiAppRuntime.shutdown();
     }
 
     @Test(description = "Testing reading by selecting specific fields ")
-    public void readFromTableTest3() throws InterruptedException {
+    public void readFromTableSelectingFieldsTest() throws InterruptedException {
         log.info("ReadFromTableTest3");
         SiddhiManager siddhiManager = new SiddhiManager();
         String streams = "" +
@@ -191,6 +197,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 "select StockTable.symbol as checkName, " +
                 "StockTable.price as checkCategory\n " +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -206,6 +213,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 }
             }
         });
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WS", 325.6f, 100L});
         stockStream.send(new Object[]{"IB", 75.6f, 100L});
@@ -213,6 +221,7 @@ public class ReadEventsFromApacheIgniteTestCase {
         fooStream.send(new Object[]{150});
         fooStream.send(new Object[]{200});
         Thread.sleep(500);
+
         Assert.assertTrue(eventArrived, "Event arrived");
         Assert.assertEquals(removeEventCount, 0, "Number of remove events");
         siddhiAppRuntime.shutdown();
@@ -232,6 +241,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 "insert into OutputStream;";
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
+
         siddhiAppRuntime.start();
         fooStream.send(new Object[]{"WSO2"});
         siddhiAppRuntime.shutdown();
@@ -260,6 +270,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 "select StockTable.symbol as checkName, StockTable.price as checkCategory, " +
                 "StockTable.volume as checkVolume\n" +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -275,12 +286,14 @@ public class ReadEventsFromApacheIgniteTestCase {
                 }
             }
         });
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 58.6f, 100L});
         stockStream.send(new Object[]{"WSO2", 57.6f, 100L});
         stockStream.send(new Object[]{"IBM", 97.6f, 100L});
         fooStream.send(new Object[]{"WSO2"});
         Thread.sleep(1000);
+
         Assert.assertTrue(eventArrived, "Event arrived");
         Assert.assertEquals(removeEventCount, 0, "Number of remove events");
         siddhiAppRuntime.shutdown();
@@ -310,6 +323,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 "select StockTable.symbol as checkName, StockTable.price as checkCategory, " +
                 "StockTable.volume as checkVolume\n" +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -334,6 +348,7 @@ public class ReadEventsFromApacheIgniteTestCase {
         fooStream.send(new Object[]{"IBM"});
         fooStream.send(new Object[]{"MIT"});
         Thread.sleep(1000);
+
         Assert.assertTrue(eventArrived, "Event arrived");
         Assert.assertEquals(removeEventCount, 0, "Number of remove events");
         siddhiAppRuntime.shutdown();
@@ -363,6 +378,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 "select StockTable.symbol as checkName, StockTable.price as checkCategory, " +
                 "StockTable.volume as checkVolume\n" +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -387,6 +403,7 @@ public class ReadEventsFromApacheIgniteTestCase {
         fooStream.send(new Object[]{"IBM"});
         fooStream.send(new Object[]{"MIT"});
         Thread.sleep(1000);
+
         Assert.assertTrue(eventArrived, "Event arrived");
         Assert.assertEquals(removeEventCount, 0, "Number of remove events");
         siddhiAppRuntime.shutdown();
@@ -416,6 +433,7 @@ public class ReadEventsFromApacheIgniteTestCase {
                 "StockTable.volume as checkVolume," +
                 "StockTable.price as checkCategory\n " +
                 "insert into OutputStream;";
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(streams + query);
         InputHandler stockStream = siddhiAppRuntime.getInputHandler("StockStream");
         InputHandler fooStream = siddhiAppRuntime.getInputHandler("FooStream");
@@ -431,12 +449,14 @@ public class ReadEventsFromApacheIgniteTestCase {
                 }
             }
         });
+
         siddhiAppRuntime.start();
         stockStream.send(new Object[]{"WSO2", 325.6f, 100L});
         stockStream.send(new Object[]{"IBM", 75.6f, 100L});
         stockStream.send(new Object[]{"GOOG", 12.6F, 100L});
         fooStream.send(new Object[]{"WSO2"});
         Thread.sleep(500);
+
         Assert.assertTrue(eventArrived, "Event arrived");
         Assert.assertEquals(removeEventCount, 0, "Number of remove events ");
         siddhiAppRuntime.shutdown();
